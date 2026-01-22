@@ -108,7 +108,7 @@ export const ChessGame: React.FC = () => {
           transition={{ delay: 0.4 }}
           className="mt-12 text-center text-muted-foreground text-sm"
         >
-          <p className="mt-1">Made with ❤️ by Sunny Kumar Dubey</p>
+          <p className="mt-1">Made with ❤️ by Karan Singh </p>
           <p>© {new Date().getFullYear()} Chess Game. All rights reserved.</p>
         </motion.footer>
       </div>
