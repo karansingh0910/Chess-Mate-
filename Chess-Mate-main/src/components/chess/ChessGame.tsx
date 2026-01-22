@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { getRandomAIMove } from "./ai";
+import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import { ChessBoard } from './ChessBoard';
 import { GameInfo } from './GameInfo';
@@ -14,6 +15,8 @@ export const ChessGame: React.FC = () => {
   const [playerNames, setPlayerNames] = useState<{ white: string; black: string } | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [gameStarted, setGameStarted] = useState(false);
+  const [gameMode, setGameMode] = useState<"pvp" | "ai">("pvp");
+  const AI_COLOR: "w" | "b" = "b";
 
   const handleStartGame = (names: { white: string; black: string }) => {
     setPlayerNames(names);
@@ -31,20 +34,69 @@ export const ChessGame: React.FC = () => {
   };
 
   // Play game over sound
-  React.useEffect(() => {
-    if (gameHook.gameState.isGameOver && soundEnabled) {
-      playGameOverSound();
-    }
-  }, [gameHook.gameState.isGameOver, soundEnabled, playGameOverSound]);
+React.useEffect(() => {
+  if (gameHook.gameState.isGameOver && soundEnabled) {
+    playGameOverSound();
+  }
+}, [gameHook.gameState.isGameOver, soundEnabled, playGameOverSound]);
 
-  if (!gameStarted || !playerNames) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+// ✅ AI Auto Move (only when AI mode)
+React.useEffect(() => {
+  if (gameMode !== "ai") return;
+  if (gameHook.gameState.isGameOver) return;
+
+  // ✅ AI plays as Black
+  if (gameHook.gameState.turn !== "b") return;
+
+  const chess = gameHook.game;
+
+  const aiMove = getRandomAIMove(chess);
+  if (!aiMove) return;
+
+  const timer = setTimeout(() => {
+    gameHook.makeMove(aiMove.from, aiMove.to);
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [
+  gameMode,
+  gameHook.gameState.turn,
+  gameHook.gameState.isGameOver,
+  gameHook.game,
+]);
+
+   if (!gameStarted || !playerNames) {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-4">
+
+        {/* ✅ MODE SELECT */}
+        <div className="flex gap-3 justify-center">
+          <button
+            onClick={() => setGameMode("pvp")}
+            className={`px-4 py-2 rounded-lg border ${
+              gameMode === "pvp" ? "bg-black text-white" : "bg-white"
+            }`}
+          >
+            Human vs Human
+          </button>
+
+          <button
+            onClick={() => setGameMode("ai")}
+            className={`px-4 py-2 rounded-lg border ${
+              gameMode === "ai" ? "bg-black text-white" : "bg-white"
+            }`}
+          >
+            AI vs Human
+          </button>
+        </div>
+
+        {/* ✅ START FORM */}
         <PlayerNameInput onStart={handleStartGame} />
       </div>
-    );
-  }
-
+    </div>
+  );
+}
   return (
     <div className="min-h-screen bg-background py-6 px-4">
       <div className="max-w-7xl mx-auto">
