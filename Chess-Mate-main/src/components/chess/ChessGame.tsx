@@ -1,4 +1,4 @@
-import { getRandomAIMove } from "./ai";
+import { getBestMoveMinimaxAlphaBeta } from "./ai";
 import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import { ChessBoard } from './ChessBoard';
@@ -50,11 +50,11 @@ React.useEffect(() => {
 
   const chess = gameHook.game;
 
-  const aiMove = getRandomAIMove(chess);
+  const aiMove = getBestMoveMinimaxAlphaBeta(chess );
   if (!aiMove) return;
 
   const timer = setTimeout(() => {
-    gameHook.makeMove(aiMove.from, aiMove.to);
+    gameHook.makeMove(aiMove.from as any, aiMove.to as any);
   }, 500);
 
   return () => clearTimeout(timer);
