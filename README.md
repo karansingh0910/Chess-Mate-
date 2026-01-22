@@ -14,7 +14,7 @@ A fully functional Chess Game Website built using HTML, CSS, and JavaScript with
 - Minimax Algorithm + Alpha-Beta Pruning
 
 ## 🔗 Live Demo
-: https://chess-mate-seven.vercel.app/
+: https://chess-mate-gilt.vercel.app/
 
 ## 📌 GitHub Repository
  https://github.com/karansingh0910/Chess-Mate
