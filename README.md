@@ -17,4 +17,4 @@ A fully functional Chess Game Website built using HTML, CSS, and JavaScript with
 : https://chess-mate-gilt.vercel.app/
 
 ## 📌 GitHub Repository
- https://github.com/karansingh0910/Chess-Mate
+ https://github.com/karansingh0910/Chess-Mate-
